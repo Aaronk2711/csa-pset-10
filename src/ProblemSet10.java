@@ -1,18 +1,7 @@
-import java.util.*;
+import java.util.HashMap;
 
 public class ProblemSet10 {
 
-    public static void main(String[] args) {
-
-        ProblemSet10 stuff = new ProblemSet10();
-
-        int[] input1 = new int[]{1, 1, 1, 1, 1};
-        int[] input2 = new int[]{5, 4};
-
-        //System.out.println(Arrays.toString(stuff.seriesUp(2)));
-        System.out.println(stuff.countClumps(input1));
-
-    }
 
     public String[] fizzBuzz(int start, int end) {
 
@@ -122,56 +111,43 @@ public class ProblemSet10 {
 
     }
 
-//    public int[] fix45(int[] numbers) {
-//
-//        if (numbers == null) {
-//            return null;
-//        }
-//
-//        int fourValues = 0;
-//        int fiveValues = 0;
-//        boolean foursAreAlone = true;
-//
-//        for (int i = 0; i < numbers.length; i++) {
-//            if (numbers[i] == 3) {
-//                if (firstThreeIndex == -1) {
-//                    firstThreeIndex = i;
-//                } if (i != numbers.length-1 && numbers[i+1] == 3) {
-//                    return null;
-//                }
-//                threeValues++;
-//            } else if (numbers[i] == 4) {
-//                if (firstFourIndex == -1) {
-//                    firstFourIndex = i;
-//                }
-//                fourValues++;
-//            }
-//        }
-//
-//        if (fourValues == 0 && fiveValues == 0) {
-//            return null;
-//        }
-//        for (int i = 0; i < numbers.length; i++) {
-//            if ((numbers[i] == 4 && i == numbers.length - 1) || (numbers[i] == 4 && numbers[i+1] == 4)) {
-//                foursAreAlone = false;
-//            }
-//        }
-//        if (fourValues != fiveValues || !foursAreAlone) {
-//            return null;
-//        }
-//        for (int i = 0; i < numbers.length; i++) {
-//            if (numbers[i] == 5) {
-//                for (int j = 0; j < numbers.length; j++) {
-//                    if (numbers[j] == 4 && numbers[j + 1] != 5) {
-//                        int temp = numbers[j+1];
-//                        numbers[j+1] = numbers[i];
-//                        numbers[i] = temp;
-//                    }
-//                }
-//            }
-//        }
-//        return numbers;
-//    }
+    public int[] fix45(int[] numbers) {
+
+        if (numbers == null) {
+            return null;
+        }
+
+        int fourValues = 0;
+        int fiveValues = 0;
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] == 4) {
+                if (i != numbers.length-1 && numbers[i+1] == 4) {
+                    return null;
+                }
+                fourValues++;
+            } else if (numbers[i] == 5) {
+                fiveValues++;
+            }
+        }
+
+        if (fourValues == 0 && fiveValues == 0) {
+            return null;
+        }
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] == 5) {
+                for (int k = 0; k < numbers.length; k++) {
+                    if (numbers[k] == 4 && numbers[k + 1] != 5) {
+                        int t = numbers[k+1];
+                        numbers[k+1] = numbers[i];
+                        numbers[i] = t;
+                    }
+                }
+            }
+        }
+        return numbers;
+    }
 
     public boolean canBalance(int[] numbers) {
 
@@ -217,38 +193,27 @@ public class ProblemSet10 {
             }
         }
 
-        for (int k = 1; k < inner.length; k++) {
+        for (int k = 0; k < inner.length-1; k++) {
             if (inner[k] > inner[k+1]) {
                 return false;
             }
         }
 
-        int innerIndex = 0;
-        int numberOfMatches = 0;
-
-        for (int i = 0; i < outer.length && innerIndex < inner.length; i++) {
-            if (outer[i] > inner[innerIndex]) {
-                break;
+        boolean found = true;
+        for (int j = 0; j < inner.length; j++) {
+            int test = 0;
+            for (int m = 0; m < outer.length; m++) {
+                if (outer[m] == inner[j]) {
+                    test += 1;
+                }
             }
-
-            if ((outer[i] == inner[innerIndex]) && (innerIndex != inner.length - 1) && (inner[innerIndex + 1] != inner[innerIndex])) {
-                numberOfMatches++;
-                innerIndex++;
-            } else if ((outer[i] == inner[innerIndex]) && (innerIndex != inner.length - 1) && (inner[innerIndex + 1] == inner[innerIndex])) {
-                numberOfMatches++;
-                i--;
-                innerIndex++;
-            } else if (outer[i] == inner[innerIndex] && innerIndex == inner.length - 1) {
-                numberOfMatches++;
-                break;
+            if (test == 0) {
+                return false;
             }
         }
 
-        if (numberOfMatches >= inner.length) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
+
     }
 
     public int[] squareUp(int n) {
